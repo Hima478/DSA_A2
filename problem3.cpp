@@ -4,7 +4,6 @@ using namespace std;
 int minFlips(int arr[], int n, int k) {
     int flips = 0;
 
-    // Check if it's possible to make all elements 1
     for (int i = 0; i < n; i++) {
         if (arr[i] == 0) {
             if (i + k > n) {
@@ -46,7 +45,7 @@ void readFile(){
     while (!file.eof()) {
         cout << "test case" << testCase << endl;
         int n, k;
-        int arr[100];  // Assuming max size of 100
+        int arr[100];
         file >> n;
         cout<<"Main Array: [";
         for (int i = 0; i < n; i++) {
