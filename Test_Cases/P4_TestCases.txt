@@ -1,0 +1,6 @@
+Ahmed 50 0
+Badr 80 1
+Cam 80 2
+Dalia 30 3
+Eman 90 4
+Farah 90 5
