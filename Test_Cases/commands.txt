@@ -1,0 +1,15 @@
+visit google.com
+visit wikipedia.org
+visit youtube.com
+goBack
+goBack
+goForward
+visit facebook.com
+goBack
+goForward
+visit twitter.com
+visit linkedin.com
+goBack
+goBack
+goForward
+goForward
