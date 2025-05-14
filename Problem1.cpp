@@ -215,6 +215,6 @@ void processFile(const char* filename) {
 }
 
 int main() {
-    processFile("commands.txt");
+    processFile("P1_TestCases.txt");
     return 0;
 }
