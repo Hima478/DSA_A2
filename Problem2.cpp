@@ -1,7 +1,9 @@
 #include <iostream>
+#include<iomanip>
 using namespace std;
 
 #define HeightBase 0
+const int dash = -1193125632,MN =-1193725633,space=-1793125634,slash=-1193125675,backslash=-1193925636;
 
 struct AVLNode {
     int key;
@@ -11,7 +13,6 @@ struct AVLNode {
     AVLNode* right;
     AVLNode* left;
     int height;
-
     AVLNode() : right(nullptr), left(nullptr), height(HeightBase) {}
     AVLNode(int key, string name, string phone, string email)
         : key(key), name(name), phone(phone), email(email), right(nullptr), left(nullptr), height(HeightBase) {}
@@ -201,7 +202,37 @@ class AVLTree {
             DisplayTreeHelper(node->right, indent, true);
         }
     }
-
+    /* Added by Ahmad Ibrahim */
+    void print2DTree(int**show,int N,int M,int s){
+        cout<<'\n';
+        for(int i=0;i<N;++i){
+            for(int j=0;j<M;++j){
+                if(show[i][j]==dash)cout<<setfill('_')<<setw(s)<<"_";
+                else if(show[i][j]==space)cout<<setfill(' ')<<setw(s)<<" ";
+                else if(show[i][j]==slash)cout<<right<<setw(s)<<'/';
+                else if(show[i][j]==backslash)cout<<left<<setw(s)<<'\\';
+                else if(N-i-1)cout<<setfill('_')<<setw(s)<<show[i][j];
+                else cout<<setfill(' ')<<setw(s)<<show[i][j];        
+            }cout<<'\n';
+        }
+    }
+    void setDash(int**show,int i,int j,int l){if(j>l)swap(j,l);for(int k=j+1;k<l;++k)show[i][k]=dash;}
+    void navigate(int arr[],int**show,int N,int M,int k=1,int i=0,int j=15,int s=8){
+        if(k>M)return;
+        show[i][j]=arr[k-1];
+        int d= k<<1;
+        if(d<=M && arr[d-1]!=MN){
+            setDash(show,i,j,j-s);
+            show[i+1][j-s]=slash;
+            navigate(arr,show,N,M,d,i+2,j-s,s>>1);
+        }
+        if(d<=M && arr[d]!=MN){
+            setDash(show,i,j,j+s);
+            show[i+1][j+s]=backslash;
+            navigate(arr,show,N,M,d+1,i+2,j+s,s>>1);
+        }
+    }
+    /*          The End         */
 public:
     AVLTree() : root(nullptr), size(0) {}
     ~AVLTree() { destroy(root); }
@@ -256,9 +287,79 @@ public:
             DisplayTreeHelper(root);
         }
     }
-};
+/* 
+public static void sketch(Node node){
+   printNode(node,0);
+}
+public static int printNode(Node node, int level){
+  String line = "";
+  String lineLeft = "";
+  String lineRight = "";
+  for (int i = 0; i++; i<level){
+   line = line + "  ";
+   lineLeft = lineLeft + "  ";
+   lineRight = lineRight + "  ";
+  }
+  line = line + node.getValue();
 
+  System.out.println(line);
+  System.out.println(lineLeft);
+  if(node.getLeft() != null){
+   printNode(node.getLeft(), level+1); 
+  }
+ .... proceed here
+*/
+    void printNode(AVLNode *node,int level){
+        string line = "";
+        string lineLeft = "";
+        string lineRight = "";
+        for(int i=0;i<level;++i){
+            line+=" ";lineLeft+=" ";lineRight+=" ";
+        }
+    }
+    void printHelper(int*data,AVLNode *node,int i=1){
+        if(node == nullptr)return;
+        data[i -1] = node->key;
+        printHelper(data,node->right,i*2+1);
+        printHelper(data,node->left,i*2);
+    }
+    void printTree(){
+        if(root != nullptr){
+            int H = (root->height) - HeightBase +1;
+            int MXnodes = (1<<H)-1;
+            int showH = H+H-1;
+            if(showH<0)showH=0;
+            int dashes = 1<<(H-2);
+            if(dashes<0)dashes=0;
+            int s=0;
+            cout<<"The height is: "<<H<<'\n';
+            int data[MXnodes];
+            for(int i=0;i<MXnodes;++i)data[i]=MN;
+            // store tree in a static array to ease the navigation
+            printHelper(data,root);
+            int**show = new int*[showH];
+            // Get max_length of the numbers
+            for(int i=0;i<MXnodes;++i){
+                if(data[i]!=MN && s < to_string(data[i]).size())
+                    s=to_string(data[i]).size();
+            }
+            for(int i=0;i<showH;++i){
+                show[i] = new int[MXnodes];
+                for(int j=0;j<MXnodes;++j){
+                    show[i][j]=space;
+                }
+            }
+            navigate(data,show,showH,MXnodes,1,0,MXnodes>>1,dashes);
+            print2DTree(show,showH,MXnodes,s);
+            for(int i=0;i<showH;++i)
+                delete[] show[i];
+            delete[] show;
+        }
+    }
+};
 int AVLTree::f = 1;
+
+
 
 
 void displayOptions() {
@@ -315,6 +416,22 @@ void DisplayCurrentTreeStructure(AVLTree& tree) {
 
 int main() {
     AVLTree tree;
+    /*  Added by Ahmad Ibrahim*/
+    // tree.insertContact(100,"","","");
+    // tree.printTree();
+    // tree.insertContact(200,"","","");
+    // tree.printTree();
+    // tree.insertContact(300,"","","");
+    // tree.printTree();
+    // tree.insertContact(900,"","","");
+    // tree.printTree();
+    // tree.insertContact(500,"","","");
+    // tree.printTree();
+    // tree.insertContact(800,"","","");
+    // tree.printTree();
+    // tree.insertContact(400,"","","");
+    // tree.printTree();
+    /*  */
     int choice;
 
     while (true) {
@@ -332,4 +449,5 @@ int main() {
             default: cout << "Invalid choice. Try again.\n";
         }
     }
+    return 0;
 }
